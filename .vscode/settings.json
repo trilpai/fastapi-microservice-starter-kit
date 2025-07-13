@@ -1,0 +1,128 @@
+{
+  // --------------------------------------
+  // ✨ Editor Behavior
+  // --------------------------------------
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.detectIndentation": false,
+  "editor.tabSize": 2,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.exclude": {
+    "**/__pycache__": true,
+    "**/.venv": true,
+    "**/.mypy_cache": true,
+    "**/.pytest_cache": true,
+    "**/node_modules": true,
+    "**/.ruff_cache": true,
+    "**/.vscode-test": true
+  },
+
+  // --------------------------------------
+  // 🐍 Python Formatting & Linting
+  // --------------------------------------
+  "python.formatting.provider": "black",
+  "python.formatting.blackArgs": ["--line-length", "88"],
+  "python.linting.enabled": true,
+  "python.linting.pylintEnabled": false,
+  "python.linting.flake8Enabled": true,
+  "python.linting.mypyEnabled": true,
+  "python.linting.ruffEnabled": true,
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.analysis.typeCheckingMode": "basic",
+  "python.analysis.diagnosticMode": "workspace",
+  "python.languageServer": "Pylance",
+
+  // Optional: Use Ruff as formatter (if you prefer)
+  // "editor.codeActionsOnSave": {
+  //   "source.organizeImports": true,
+  //   "source.fixAll": true
+  // },
+
+  // --------------------------------------
+  // 📓 Jupyter Support
+  // --------------------------------------
+  "jupyter.askForKernelRestart": false,
+  "jupyter.enablePlotViewer": true,
+  "jupyter.notebookFileRoot": "${workspaceFolder}",
+
+  // --------------------------------------
+  // 🧩 Tailwind CSS Support
+  // --------------------------------------
+  "tailwindCSS.experimental.classRegex": [
+    "class\\s*[:=]\\s*['\"]([^'\"]*)['\"]",
+    "class:\\s*['\"]([^'\"]*)['\"]",
+    "tw`([^`]*)`",
+    "className=\"([^\"]*)\"",
+    "className='([^']*)'"
+  ],
+
+  // --------------------------------------
+  // 📝 Markdown & Docs
+  // --------------------------------------
+  "markdownlint.config": {
+    "default": true,
+    "MD013": false // Allow long lines
+  },
+
+  // --------------------------------------
+  // 🌐 Language-Specific Formatters
+  // --------------------------------------
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[markdown]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[yaml]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[jinja-html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[python]": {
+    "editor.defaultFormatter": "ms-python.python"
+  },
+  "[dockerfile]": {
+    "editor.defaultFormatter": "ms-azuretools.vscode-docker"
+  },
+
+  // --------------------------------------
+  // 🧠 IntelliSense & Import Sorting
+  // --------------------------------------
+  "python.analysis.autoImportCompletions": true,
+  "python.analysis.importFormat": "absolute",
+  "python.analysis.completeFunctionParens": true,
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit"
+  },
+
+  // --------------------------------------
+  // 🖼️ Theme & UI
+  // --------------------------------------
+  "workbench.iconTheme": "material-icon-theme",
+
+  // --------------------------------------
+  // 💻 Terminal
+  // --------------------------------------
+  "terminal.integrated.inheritEnv": true,
+  "terminal.integrated.defaultProfile.windows": "Command Prompt",
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "terminal.integrated.defaultProfile.osx": "zsh",
+  "jupyter.interactiveWindow.creationMode": "perFile",
+  "jupyter.interactiveWindow.textEditor.executeSelection": true
+}
+

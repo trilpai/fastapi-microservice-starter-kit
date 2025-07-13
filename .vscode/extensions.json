@@ -1,0 +1,62 @@
+{
+  "recommendations": [
+    // 🐍 Python & Jupyter
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-toolsai.jupyter",
+    "njpwerner.autodocstring",
+    "ms-pyright.pyright",
+
+    // 🧼 Linting, Formatting, and Imports
+    "charliermarsh.ruff",                      // Ruff linter (unofficial support)
+    "esbenp.prettier-vscode",                  // Prettier for HTML/CSS/JS
+    "htmlhint.vscode-htmlhint",                // HTML linting
+    "streetsidesoftware.code-spell-checker",   // Spell-check for code and markdown
+
+    // 🧪 Testing & Coverage
+    "littlefoxteam.vscode-python-test-adapter", // GUI test explorer for Pytest
+    "ryanluker.vscode-coverage-gutters",        // Code coverage highlighting
+
+    // 🚀 FastAPI, REST & OpenAPI
+    "humao.rest-client",                       // Send HTTP requests from `.http` files
+    "42Crunch.vscode-openapi",                 // OpenAPI/Swagger validation and preview
+    "redhat.vscode-yaml",                      // YAML/Compose editing
+    "tintinweb.graphviz-interactive-preview",  // Visualize ERD/OpenAPI graphs
+
+    // 📊 Dash & Plotly (JS/HTML support)
+    "naumovs.color-highlight",                 // Visual color preview in CSS/JS
+    "christian-kohler.path-intellisense",      // Path suggestions for static files
+    "oderwat.indent-rainbow",                  // Visual indentation guides
+
+    // 🎨 Tailwind CSS
+    "bradlc.vscode-tailwindcss",               // Tailwind class autocomplete
+
+    // 🧩 Jinja2 Template Syntax
+    "wholroyd.jinja",                          // Lightweight, non-Django Jinja syntax support
+
+    // 📝 Markdown, Authoring & Docs
+    "yzhang.markdown-all-in-one",              // Markdown formatting & preview
+    "bierner.markdown-preview-github-styles",  // GitHub-style MD preview
+    "davidanson.vscode-markdownlint",          // Markdown linting
+    "shd101wyy.markdown-preview-enhanced",     // Export Markdown/Plotly to HTML/PDF
+
+    // 🔐 Env, Secrets & Configs
+    "mikestead.dotenv",                        // .env syntax support
+
+    // ✅ Git & TODOs
+    "eamodio.gitlens",                         // Git blame, diff, insights
+    "github.vscode-pull-request-github",       // GitHub workflow + PR view
+    "gruntfuggly.todo-tree",                   // Highlight and manage TODOs in code
+
+    // 🐳 Docker & Containers
+    "ms-azuretools.vscode-docker",             // Dockerfile, compose, container explorer
+
+    // 🛢️ Optional: MySQL client (VS Code GUI)
+    "cweijan.vscode-mysql-client2"
+  ],
+  "unwantedRecommendations": [
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint"
+  ]
+}
+

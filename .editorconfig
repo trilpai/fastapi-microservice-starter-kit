@@ -1,0 +1,72 @@
+# EditorConfig helps maintain consistent coding styles between different editors and IDEs
+# More info: https://editorconfig.org
+
+root = true
+
+# --------------------------------------------------
+# ✨ Default settings for all files
+# --------------------------------------------------
+[*]
+charset = utf-8
+end_of_line = lf
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# --------------------------------------------------
+# 🐍 Python files (PEP8 standard)
+# --------------------------------------------------
+[*.py]
+indent_size = 4
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# --------------------------------------------------
+# 📒 Markdown files
+# Allow trailing whitespace (used for line breaks)
+# --------------------------------------------------
+[*.md]
+trim_trailing_whitespace = false
+insert_final_newline = true
+
+# --------------------------------------------------
+# 🔧 JSON, YAML, TOML configs
+# 2-space indent is common for JSON/YAML
+# --------------------------------------------------
+[*.{json,yml,yaml,toml}]
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# --------------------------------------------------
+# 🌐 HTML, CSS, JS, TS, Vue, JSX
+# --------------------------------------------------
+[*.{html,css,js,ts,jsx,tsx}]
+indent_size = 2
+insert_final_newline = true
+
+# --------------------------------------------------
+# 🎨 Templates (Jinja2)
+# --------------------------------------------------
+[*.{jinja,jinja2}]
+indent_size = 2
+insert_final_newline = true
+
+# --------------------------------------------------
+# 📓 Jupyter Notebooks
+# Metadata should not be trimmed
+# --------------------------------------------------
+[*.ipynb]
+insert_final_newline = false
+trim_trailing_whitespace = false
+
+# --------------------------------------------------
+# ⚙️ Shell scripts
+# Shell usually uses tabs or 2 spaces
+# --------------------------------------------------
+[*.sh]
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+

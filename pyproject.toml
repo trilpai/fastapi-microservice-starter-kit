@@ -1,0 +1,88 @@
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+# --------------------------------------
+# 🔲 Black — Code Formatter
+# --------------------------------------
+[tool.black]
+line-length = 88
+target-version = ["py311"]
+include = '\.pyi?$'
+skip-string-normalization = false
+
+# --------------------------------------
+# 🔀 isort — Import Sorter
+# --------------------------------------
+[tool.isort]
+profile = "black"
+line_length = 88
+multi_line_output = 3
+include_trailing_comma = true
+force_grid_wrap = 0
+use_parentheses = true
+ensure_newline_before_comments = true
+known_first_party = ["app"]  # Adjust if your package name is different
+known_third_party = ["fastapi", "uvicorn", "pydantic"]  # Add other dependencies here
+
+# --------------------------------------
+# 🧼 Ruff — Linter + Import Sort + More
+# --------------------------------------
+[tool.ruff]
+line-length = 88
+target-version = "py311"
+select = ["E", "F", "W", "I"]  # Errors, formatting, warnings, imports
+ignore = ["E203", "E501"]     # Compatible with Black
+exclude = ["migrations", "__pycache__"]
+
+[tool.ruff.mccabe]
+max-complexity = 10
+
+[tool.ruff.per-file-ignores]
+"__init__.py" = ["F401"]
+
+# --------------------------------------
+# 🧪 Pytest — Test Config
+# --------------------------------------
+[tool.pytest.ini_options]
+minversion = "6.0"
+addopts = "-ra -q --tb=short"
+testpaths = ["tests"]
+xfail_strict = true
+filterwarnings = [
+  "ignore::DeprecationWarning"
+]
+
+# --------------------------------------
+# 🧪 Coverage.py — Code Coverage Reporting
+# --------------------------------------
+[tool.coverage.run]
+branch = true
+source = ["app"]
+
+[tool.coverage.report]
+omit = ["tests/*", "*/__init__.py"]
+show_missing = true
+skip_covered = true
+precision = 2
+fail_under = 90
+
+# --------------------------------------
+# 🔍 Mypy — Optional Static Type Checker
+# --------------------------------------
+[tool.mypy]
+python_version = "3.11"
+strict = true
+warn_unused_configs = true
+warn_unused_ignores = true
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+disallow_untyped_calls = true
+disallow_untyped_decorators = false
+ignore_missing_imports = true
+show_error_codes = true
+pretty = true
+no_implicit_optional = true
+files = ["app", "tests"]
+exclude = ["migrations"]
+

@@ -1,0 +1,47 @@
+{
+  // Maximum line length
+  "printWidth": 100,
+
+  // Number of spaces per indentation level
+  "tabWidth": 2,
+
+  // Indent with spaces instead of tabs
+  "useTabs": false,
+
+  // Add semicolons at the ends of statements
+  "semi": true,
+
+  // Use single quotes instead of double quotes (except in JSX)
+  "singleQuote": true,
+
+  // Only add quotes around object properties when required
+  "quoteProps": "as-needed",
+
+  // Use double quotes in JSX (more common and compatible)
+  "jsxSingleQuote": false,
+
+  // Add trailing commas wherever valid in ES5 (objects, arrays, etc.)
+  "trailingComma": "es5",
+
+  // Add spaces between brackets in object literals: { foo: bar }
+  "bracketSpacing": true,
+
+  // Omit parentheses around a sole arrow function parameter: x => x
+  "arrowParens": "avoid",
+
+  // Use LF for all files (Unix-style line endings)
+  "endOfLine": "lf",
+
+  // Format embedded languages (like CSS in HTML or JS in Markdown)
+  "embeddedLanguageFormatting": "auto",
+
+  // Format quoted code in Markdown files
+  "proseWrap": "preserve",
+
+  // Controls whether to indent code inside <script> and <style> tags in HTML
+  "htmlWhitespaceSensitivity": "css",
+
+  // (Optional) Sort object keys if you use plugins that support it
+  // "pluginSearchDirs": false
+}
+
