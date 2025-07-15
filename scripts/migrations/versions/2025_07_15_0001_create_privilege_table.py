@@ -1,7 +1,7 @@
 """create privilege table
 
 Revision ID: 39f025c30170
-Revises: 
+Revises:
 Create Date: 2025-07-15 21:34:15.545181
 
 """
@@ -25,8 +25,8 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), autoincrement=True, nullable=False),
     sa.Column('name', sa.String(length=64), nullable=False),
     sa.Column('description', sa.String(length=256), nullable=True),
-    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
-    sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('(CURRENT_TIMESTAMP)'), nullable=False),
+    sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
+    sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.func.now(), nullable=False),
     sa.Column('created_by', sa.Integer(), nullable=True),
     sa.Column('updated_by', sa.Integer(), nullable=True),
     sa.Column('deleted_at', sa.DateTime(), nullable=True),
