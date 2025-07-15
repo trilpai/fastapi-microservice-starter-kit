@@ -32,3 +32,5 @@ class Base(DeclarativeBase):
 # Important: This is required for Alembic to "see" all models when autogenerating migrations.
 # Without this import, Alembic won't detect your models automatically.
 from app.api.domains.user.models.privilege import Privilege
+from app.api.domains.user.models.role import Role
+
