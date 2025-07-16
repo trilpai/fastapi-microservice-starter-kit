@@ -30,15 +30,11 @@ class Privilege(Base, TimestampMixin):
     __tablename__ = "privilege"
 
     # ✅ Add index for soft-deletion queries
-    __table_args__ = (
-        Index("ix_privilege_deleted_at", "deleted_at"),
-    )
+    __table_args__ = (Index("ix_privilege_deleted_at", "deleted_at"),)
 
     # 🔑 Unique identifier for each privilege
     id: Mapped[int] = mapped_column(
-        primary_key=True,
-        autoincrement=True,
-        doc="Primary key ID"
+        primary_key=True, autoincrement=True, doc="Primary key ID"
     )
 
     # 🏷️ Unique name of the privilege (e.g., 'manage_users')
@@ -46,12 +42,12 @@ class Privilege(Base, TimestampMixin):
         String(64),
         unique=True,
         nullable=False,
-        doc="Unique name of the privilege (e.g., 'view_reports')"
+        doc="Unique name of the privilege (e.g., 'view_reports')",
     )
 
     # 📝 Optional human-readable description
     description: Mapped[Optional[str]] = mapped_column(
         String(256),
         nullable=True,
-        doc="Optional description of what this privilege allows"
+        doc="Optional description of what this privilege allows",
     )

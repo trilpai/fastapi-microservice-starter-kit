@@ -31,8 +31,8 @@ class Settings(BaseSettings):
 
     # 📦 SettingsConfig tells Pydantic to load from `.env` file
     model_config = SettingsConfigDict(
-        env_file=".env",     # Load from .env in root directory
-        extra="ignore"       # Ignore unexpected variables
+        env_file=".env",  # Load from .env in root directory
+        extra="ignore",  # Ignore unexpected variables
     )
 
 

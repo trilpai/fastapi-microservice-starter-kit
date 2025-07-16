@@ -33,4 +33,4 @@ class Base(DeclarativeBase):
 # Without this import, Alembic won't detect your models automatically.
 from app.api.domains.user.models.privilege import Privilege
 from app.api.domains.user.models.role import Role
-
+from app.api.domains.user.models.role_privilege import RolePrivilege

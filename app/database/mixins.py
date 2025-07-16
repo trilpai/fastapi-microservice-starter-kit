@@ -40,7 +40,7 @@ class TimestampMixin:
         DateTime(timezone=True),
         nullable=False,
         server_default=func.now(),
-        doc="Timestamp when the record was created"
+        doc="Timestamp when the record was created",
     )
 
     # 🔁 Timestamp when the record was last updated (auto-updates on UPDATE)
@@ -49,23 +49,21 @@ class TimestampMixin:
         nullable=False,
         server_default=func.now(),
         onupdate=func.now(),
-        doc="Timestamp when the record was last updated"
+        doc="Timestamp when the record was last updated",
     )
 
     # 👤 Optional user ID of the creator
     created_by: Mapped[Optional[int]] = mapped_column(
-        nullable=True,
-        doc="User ID of the record creator"
+        nullable=True, doc="User ID of the record creator"
     )
 
     # 🛠️ Optional user ID of the last modifier
     updated_by: Mapped[Optional[int]] = mapped_column(
-        nullable=True,
-        doc="User ID of the last record updater"
+        nullable=True, doc="User ID of the last record updater"
     )
 
     # 🗑️ If set, the record is considered soft-deleted
     deleted_at: Mapped[Optional[datetime]] = mapped_column(
         nullable=True,
-        doc="Soft-delete marker; timestamp when the record was logically deleted"
+        doc="Soft-delete marker; timestamp when the record was logically deleted",
     )

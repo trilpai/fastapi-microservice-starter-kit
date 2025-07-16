@@ -30,15 +30,11 @@ class Role(Base, TimestampMixin):
     __tablename__ = "role"
 
     # ✅ Index for soft-deletion filtering
-    __table_args__ = (
-        Index("ix_role_deleted_at", "deleted_at"),
-    )
+    __table_args__ = (Index("ix_role_deleted_at", "deleted_at"),)
 
     # 🔑 Unique identifier for each role
     id: Mapped[int] = mapped_column(
-        primary_key=True,
-        autoincrement=True,
-        doc="Primary key ID"
+        primary_key=True, autoincrement=True, doc="Primary key ID"
     )
 
     # 🏷️ Unique name for the role (e.g., 'Admin', 'Staff')
@@ -46,12 +42,10 @@ class Role(Base, TimestampMixin):
         String(64),
         unique=True,
         nullable=False,
-        doc="Unique role name (e.g., 'SuperAdmin')"
+        doc="Unique role name (e.g., 'SuperAdmin')",
     )
 
     # 📝 Optional role description
     description: Mapped[Optional[str]] = mapped_column(
-        String(256),
-        nullable=True,
-        doc="Optional description of the role"
+        String(256), nullable=True, doc="Optional description of the role"
     )
