@@ -1,20 +1,21 @@
 # app/api/domains/user/models/user_auth.py
 
 """
-📛 Database model for user authentication.
+🔐 Database model for user authentication credentials.
 
-The `user_auth` table manages credentials and authentication metadata for individual users.
+The `user_auth` table handles login credentials and related metadata,
+such as:
+- Username-based login (optional, fallback to identity table possible)
+- Hashed password storage (bcrypt, argon2, etc.)
+- Lockout protection after failed login attempts
+- Timestamp of last successful login
+- Soft-deletion and auditing via TimestampMixin
 
-Features:
-- Optional username-based login
-- Secure password storage using bcrypt/argon2
-- Account lockout support after repeated failures
-- Tracks last successful login
-- Full audit trail and soft-delete support via TimestampMixin
+Each user has at most one associated `user_auth` record (1:1 relationship).
 """
 
 from datetime import datetime
-from typing import Optional
+from typing import TYPE_CHECKING, Optional
 
 from sqlalchemy import DateTime, ForeignKey, Index, Integer, String
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -22,80 +23,89 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database.base import Base
 from app.database.mixins import TimestampMixin
 
+# 🔁 Forward reference to avoid circular import
+if TYPE_CHECKING:
+    from app.api.domains.user.models.user import User
 
-# -------------------------------------------
-# 🔐 UserAuth Table Definition (Login Details)
-# -------------------------------------------
+
+# ---------------------------------------
+# 🧾 UserAuth Table Definition (1:1 Login)
+# ---------------------------------------
 class UserAuth(Base, TimestampMixin):
     """
-    The `user_auth` table stores credentials and authentication metadata for users.
+    The `user_auth` table stores login credentials and metadata for users.
 
-    It supports:
-    - Optional username-based login
-    - Hashed password storage (bcrypt/argon2)
-    - Account lockout on repeated failed attempts
-    - Tracking of last login timestamp
-    - Soft-deletion and auditing via `TimestampMixin`
+    It includes:
+    - Optional username for login (if not using email/mobile only)
+    - Secure password hash (bcrypt, argon2, etc.)
+    - Account lockout fields
+    - Last login tracking
     """
 
     __tablename__ = "user_auth"
 
-    # ✅ Index for soft-deletion filtering
-    __table_args__ = (Index("ix_user_auth_deleted_at", "deleted_at"),)
+    __table_args__ = (
+        # ✅ For filtering soft-deleted login records
+        Index("ix_user_auth_deleted_at", "deleted_at"),
+        # ✅ For quickly resolving user ID lookups (foreign key)
+        Index("ix_user_auth_user_id", "user_id"),
+    )
 
-    # 🔑 Unique ID for each login record
+    # 🔑 Primary key
     id: Mapped[int] = mapped_column(
         primary_key=True,
         autoincrement=True,
         doc="Primary key ID for each authentication record",
     )
 
-    # 🔗 Reference to the associated user
+    # 🔗 FK to user (CASCADE on delete)
     user_id: Mapped[int] = mapped_column(
         ForeignKey("user.id", ondelete="CASCADE"),
         nullable=False,
         doc="Foreign key to the associated user (deletes on cascade)",
     )
 
-    # 👤 Optional username for login (can be email/mobile elsewhere)
+    # 👤 Optional unique username for login
     username: Mapped[Optional[str]] = mapped_column(
         String(100),
         unique=True,
         nullable=True,
-        doc="Optional unique username for login (can be null if not used)",
+        doc="Optional unique username for login (nullable if not used)",
     )
 
-    # 🔒 Hashed password (bcrypt, argon2, etc.)
+    # 🔒 Password hash (bcrypt, argon2, etc.)
     password_hash: Mapped[str] = mapped_column(
-        String(256), nullable=False, doc="Securely hashed user password"
+        String(256),
+        nullable=False,
+        doc="Hashed user password using a secure algorithm",
     )
 
-    # 🚫 Number of consecutive failed password attempts
+    # 🚫 Wrong login attempt counter
     wrong_password_count: Mapped[int] = mapped_column(
         Integer,
         nullable=False,
         server_default="0",
-        doc="Number of failed password attempts (used to trigger lockouts)",
+        doc="Count of consecutive failed login attempts",
     )
 
-    # ⏳ Lockout expiry time (if user is locked out after repeated failures)
+    # ⏳ Lockout window after too many failures
     account_locked_until: Mapped[Optional[datetime]] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
-        doc="Timestamp until which the account is locked (if locked out)",
+        doc="Time until which the account remains locked after failures",
     )
 
-    # 📅 Last successful login time
+    # 📅 Timestamp of last successful login
     last_login_at: Mapped[Optional[datetime]] = mapped_column(
         DateTime(timezone=True),
         nullable=True,
-        doc="Timestamp of the user's last successful login",
+        doc="Timestamp of user's last successful login",
     )
 
-    # ↩️ SQLAlchemy relationship (optional backref to User)
-    user = relationship(
+    # ↩️ Relationship to user (1:1)
+    user: Mapped["User"] = relationship(
         "User",
-        backref="auth",
+        back_populates="auth",
         lazy="joined",
-        doc="Back-reference to the owning user",
+        doc="Back-reference to the owning user (1:1)",
     )

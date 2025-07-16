@@ -1,4 +1,4 @@
-"""add FK to user.id for audit fields
+"""Add FK constraints for audit fields (created_by, updated_by) referencing `user.id`.
 
 Revision ID: 35d024da8e2e
 Revises: 1f89f8e4a935
@@ -10,7 +10,7 @@ from typing import Sequence, Union
 from alembic import op
 import sqlalchemy as sa
 
-# revision identifiers, used by Alembic.
+# Revision identifiers, used by Alembic.
 revision: str = '35d024da8e2e'
 down_revision: Union[str, Sequence[str], None] = '1f89f8e4a935'
 branch_labels: Union[str, Sequence[str], None] = None
@@ -18,9 +18,9 @@ depends_on: Union[str, Sequence[str], None] = None
 
 
 def upgrade() -> None:
-    """Upgrade schema with batch mode for cross-dialect FK support."""
-    # Add FKs to `privilege`
-    with op.batch_alter_table("privilege", schema=None) as batch_op:
+    """Add foreign key constraints to audit fields (created_by, updated_by) across key tables."""
+    # ➕ privilege.audit_fields → user.id
+    with op.batch_alter_table("privilege") as batch_op:
         batch_op.create_foreign_key(
             "fk_privilege_created_by", "user", ["created_by"], ["id"], ondelete="SET NULL"
         )
@@ -28,8 +28,8 @@ def upgrade() -> None:
             "fk_privilege_updated_by", "user", ["updated_by"], ["id"], ondelete="SET NULL"
         )
 
-    # Add FKs to `role`
-    with op.batch_alter_table("role", schema=None) as batch_op:
+    # ➕ role.audit_fields → user.id
+    with op.batch_alter_table("role") as batch_op:
         batch_op.create_foreign_key(
             "fk_role_created_by", "user", ["created_by"], ["id"], ondelete="SET NULL"
         )
@@ -37,8 +37,8 @@ def upgrade() -> None:
             "fk_role_updated_by", "user", ["updated_by"], ["id"], ondelete="SET NULL"
         )
 
-    # Add FKs to `role_privilege`
-    with op.batch_alter_table("role_privilege", schema=None) as batch_op:
+    # ➕ role_privilege.audit_fields → user.id
+    with op.batch_alter_table("role_privilege") as batch_op:
         batch_op.create_foreign_key(
             "fk_role_privilege_created_by", "user", ["created_by"], ["id"], ondelete="SET NULL"
         )
@@ -46,8 +46,8 @@ def upgrade() -> None:
             "fk_role_privilege_updated_by", "user", ["updated_by"], ["id"], ondelete="SET NULL"
         )
 
-    # Add self-referencing FKs to `user`
-    with op.batch_alter_table("user", schema=None) as batch_op:
+    # 🔁 user.audit_fields (self-referencing) → user.id
+    with op.batch_alter_table("user") as batch_op:
         batch_op.create_foreign_key(
             "fk_user_created_by", "user", ["created_by"], ["id"], ondelete="SET NULL"
         )
@@ -57,19 +57,19 @@ def upgrade() -> None:
 
 
 def downgrade() -> None:
-    """Downgrade schema by removing FKs using batch mode."""
-    with op.batch_alter_table("user", schema=None) as batch_op:
-        batch_op.drop_constraint("fk_user_updated_by", type_="foreignkey")
+    """Remove FK constraints on audit fields."""
+    with op.batch_alter_table("user") as batch_op:
         batch_op.drop_constraint("fk_user_created_by", type_="foreignkey")
+        batch_op.drop_constraint("fk_user_updated_by", type_="foreignkey")
 
-    with op.batch_alter_table("role_privilege", schema=None) as batch_op:
-        batch_op.drop_constraint("fk_role_privilege_updated_by", type_="foreignkey")
+    with op.batch_alter_table("role_privilege") as batch_op:
         batch_op.drop_constraint("fk_role_privilege_created_by", type_="foreignkey")
+        batch_op.drop_constraint("fk_role_privilege_updated_by", type_="foreignkey")
 
-    with op.batch_alter_table("role", schema=None) as batch_op:
-        batch_op.drop_constraint("fk_role_updated_by", type_="foreignkey")
+    with op.batch_alter_table("role") as batch_op:
         batch_op.drop_constraint("fk_role_created_by", type_="foreignkey")
+        batch_op.drop_constraint("fk_role_updated_by", type_="foreignkey")
 
-    with op.batch_alter_table("privilege", schema=None) as batch_op:
-        batch_op.drop_constraint("fk_privilege_updated_by", type_="foreignkey")
+    with op.batch_alter_table("privilege") as batch_op:
         batch_op.drop_constraint("fk_privilege_created_by", type_="foreignkey")
+        batch_op.drop_constraint("fk_privilege_updated_by", type_="foreignkey")

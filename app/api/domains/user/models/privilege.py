@@ -1,19 +1,29 @@
 # app/api/domains/user/models/privilege.py
 
 """
-Database model for user privileges.
+🔐 Database model for system privileges.
 
-Represents access rights (like "read_reports", "edit_users", etc.)
-associated with roles or users in the system.
+A privilege represents a named permission or access control unit
+(e.g., "read_reports", "edit_users"). Privileges are assigned to
+roles (many-to-many) which in turn are granted to users.
+
+This model supports:
+- Soft deletion with `deleted_at`
+- Many-to-many mapping to `Role` via the `role_privilege` join table
+- Optional descriptions for better admin UI clarity
 """
 
-from typing import Optional
+from typing import TYPE_CHECKING, List, Optional
 
 from sqlalchemy import Index, String
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 from app.database.mixins import TimestampMixin
+
+# Forward declaration to avoid circular imports during model load
+if TYPE_CHECKING:
+    from app.api.domains.user.models.role import Role
 
 
 # -----------------------------
@@ -21,33 +31,51 @@ from app.database.mixins import TimestampMixin
 # -----------------------------
 class Privilege(Base, TimestampMixin):
     """
-    The `privilege` table stores named access rights in the system,
-    which can be mapped to roles or directly to users for fine-grained access control.
+    The `privilege` table defines fine-grained access rights in the system.
 
-    Example privileges: "create_user", "delete_invoice", "view_dashboard"
+    These privileges are not granted directly to users, but assigned to `Role`,
+    which can be linked to multiple users. For example:
+    - "create_user"
+    - "delete_invoice"
+    - "view_audit_logs"
+
+    This model supports unique names, optional descriptions, and is
+    soft-deletable for long-term auditing.
     """
 
     __tablename__ = "privilege"
 
-    # ✅ Add index for soft-deletion queries
-    __table_args__ = (Index("ix_privilege_deleted_at", "deleted_at"),)
-
-    # 🔑 Unique identifier for each privilege
-    id: Mapped[int] = mapped_column(
-        primary_key=True, autoincrement=True, doc="Primary key ID"
+    __table_args__ = (
+        # ✅ Index to allow fast filtering of soft-deleted rows
+        Index("ix_privilege_deleted_at", "deleted_at"),
     )
 
-    # 🏷️ Unique name of the privilege (e.g., 'manage_users')
+    # 🔑 Primary Key — auto-incremented integer
+    id: Mapped[int] = mapped_column(
+        primary_key=True, autoincrement=True, doc="Primary key ID for the privilege"
+    )
+
+    # 🏷️ Name of the privilege — must be unique
     name: Mapped[str] = mapped_column(
         String(64),
         unique=True,
         nullable=False,
-        doc="Unique name of the privilege (e.g., 'view_reports')",
+        doc="Unique identifier for the privilege (e.g., 'view_dashboard')",
     )
 
-    # 📝 Optional human-readable description
+    # 📝 Optional human-readable description (used in admin UI or docs)
     description: Mapped[Optional[str]] = mapped_column(
         String(256),
         nullable=True,
-        doc="Optional description of what this privilege allows",
+        doc="Optional description explaining the permission's purpose",
+    )
+
+    # 🔁 Many-to-many relationship to `Role`
+    # Implemented via join table: `role_privilege`
+    roles: Mapped[List["Role"]] = relationship(
+        "Role",
+        secondary="role_privilege",
+        back_populates="privileges",
+        lazy="selectin",
+        doc="List of roles that include this privilege",
     )
