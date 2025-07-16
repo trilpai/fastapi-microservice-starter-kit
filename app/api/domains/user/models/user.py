@@ -13,7 +13,7 @@ from typing import Optional
 
 from sqlalchemy import Boolean, Date, ForeignKey, Index, String
 from sqlalchemy import Enum as SQLAEnum
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from app.database.base import Base
 from app.database.mixins import TimestampMixin
@@ -91,4 +91,12 @@ class User(Base, TimestampMixin):
         ForeignKey("role.id", ondelete="RESTRICT"),
         nullable=False,
         doc="FK to assigned role",
+    )
+
+    # 🆔 One-to-many relationship to UserIdentity
+    identities = relationship(
+        "UserIdentity",
+        back_populates="user",
+        cascade="all, delete-orphan",
+        doc="List of all email/mobile/oauth identities",
     )

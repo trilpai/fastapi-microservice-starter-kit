@@ -35,4 +35,6 @@ from app.api.domains.user.models.privilege import Privilege
 from app.api.domains.user.models.role import Role
 from app.api.domains.user.models.role_privilege import RolePrivilege
 from app.api.domains.user.models.user import User
+from app.api.domains.user.models.user_auth import UserAuth
+from app.api.domains.user.models.user_identity import UserIdentity
 
