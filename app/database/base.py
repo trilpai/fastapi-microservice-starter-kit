@@ -34,3 +34,5 @@ class Base(DeclarativeBase):
 from app.api.domains.user.models.privilege import Privilege
 from app.api.domains.user.models.role import Role
 from app.api.domains.user.models.role_privilege import RolePrivilege
+from app.api.domains.user.models.user import User
+

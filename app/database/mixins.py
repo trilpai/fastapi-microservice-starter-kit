@@ -13,7 +13,7 @@ This module defines a reusable TimestampMixin class that:
 from datetime import datetime
 from typing import Optional
 
-from sqlalchemy import DateTime, func
+from sqlalchemy import DateTime, ForeignKey, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 
@@ -52,14 +52,18 @@ class TimestampMixin:
         doc="Timestamp when the record was last updated",
     )
 
-    # 👤 Optional user ID of the creator
+    # 👤 Optional user ID of the creator (FK to user.id)
     created_by: Mapped[Optional[int]] = mapped_column(
-        nullable=True, doc="User ID of the record creator"
+        ForeignKey("user.id", ondelete="SET NULL"),
+        nullable=True,
+        doc="User ID of the record creator",
     )
 
-    # 🛠️ Optional user ID of the last modifier
+    # 🛠️ Optional user ID of the last modifier (FK to user.id)
     updated_by: Mapped[Optional[int]] = mapped_column(
-        nullable=True, doc="User ID of the last record updater"
+        ForeignKey("user.id", ondelete="SET NULL"),
+        nullable=True,
+        doc="User ID of the last record updater",
     )
 
     # 🗑️ If set, the record is considered soft-deleted
